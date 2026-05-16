@@ -112,7 +112,7 @@ async def run() -> None:
                 data_feed, regime_detector, ensemble, agents
             )
             stock_cards = await stock_scanner.scan(
-                data_feed, regime_detector, ensemble, agents
+                data_feed, alpaca, regime_detector, ensemble, agents
             )
             all_cards = crypto_cards + stock_cards
 
