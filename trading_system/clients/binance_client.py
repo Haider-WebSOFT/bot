@@ -26,7 +26,7 @@ class BinanceClient:
         logger.info("BinanceClient initialised", extra={"testnet": testnet})
 
     async def _retry(self, fn, *args, **kwargs):
-        delays = [1, 2, 4]
+        delays = [0.5, 1]
         last_err = None
         for attempt, delay in enumerate([0] + delays):
             if delay:

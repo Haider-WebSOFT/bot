@@ -110,13 +110,16 @@ class DataFeed:
 
     async def get_all_snapshots(self, symbols: list[str],
                                  asset_type: str) -> list[MarketSnapshot]:
-        """Fetch all symbols concurrently."""
-        tasks = [self.get_snapshot(s, asset_type) for s in symbols]
+        """Fetch all symbols concurrently with per-symbol timeout."""
+        async def _fetch(sym):
+            return await asyncio.wait_for(self.get_snapshot(sym, asset_type), timeout=15.0)
+
+        tasks = [_fetch(s) for s in symbols]
         results = await asyncio.gather(*tasks, return_exceptions=True)
         snaps = []
         for sym, res in zip(symbols, results):
             if isinstance(res, Exception):
-                logger.error("Snapshot failed", extra={"symbol": sym, "error": str(res)})
+                logger.warning("Snapshot skipped", extra={"symbol": sym, "error": str(res)})
             else:
                 snaps.append(res)
         return snaps
