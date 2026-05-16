@@ -5,3 +5,4 @@ __pycache__/
 *.log
 logs/
 .env
+trading_system/halt_report.json
