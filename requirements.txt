@@ -1,6 +1,6 @@
 # Core
 python-binance==1.0.19
-alpaca-trade-api==3.3.0
+alpaca-trade-api==3.2.0
 yfinance==0.2.37
 pandas==2.2.2
 numpy==1.26.4
