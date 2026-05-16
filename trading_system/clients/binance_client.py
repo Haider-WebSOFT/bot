@@ -50,7 +50,8 @@ class BinanceClient:
                     raise AuthenticationError("Binance auth error", {"code": exc.code})
         except ImportError:
             pass
-        logger.warning("Binance call failed", extra={"attempt": attempt, "error": str(exc)})
+        logger.warning("Binance call failed",
+                       extra={"attempt": attempt, "error": str(exc)[:120]})
 
     async def get_ohlcv(self, symbol: str, interval: str,
                          limit: int = 500) -> pd.DataFrame:
