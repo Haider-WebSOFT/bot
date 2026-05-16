@@ -25,7 +25,7 @@ from trading_system.core.logger import get_logger
 from trading_system.data.feed import DataFeed
 from trading_system.paper_trading.paper_engine import PaperTradingEngine
 from trading_system.paper_trading.trade_journal import TradeJournal
-from trading_system.risk.portfolio_risk import PortfolioRiskManager
+from trading_system.risk.portfolio_risk import PortfolioRiskEngine as PortfolioRiskManager
 from trading_system.risk.position_sizer import PositionSizer
 from trading_system.risk.trade_manager import TradeManager
 from trading_system.scanner.crypto_scanner import CryptoScanner
@@ -51,7 +51,7 @@ def _build_agents() -> dict:
 async def run() -> None:
     print("=" * 60)
     print("  HALAL PAPER TRADING ENGINE  —  Spot Long Only")
-    print(f"  Capital: ${settings.INITIAL_CAPITAL:,.2f}")
+    print(f"  Capital: $1000.00")
     print(f"  Scan interval: {settings.SCAN_INTERVAL_MINUTES} min")
     print("=" * 60)
 
@@ -72,9 +72,12 @@ async def run() -> None:
     execution_agent = ExecutionQualityAgent()
 
     # Journal + engine
+    initial_capital = float(
+        __import__("os").environ.get("INITIAL_CAPITAL", "1000.0")
+    )
     journal = TradeJournal()
     engine = PaperTradingEngine(
-        initial_capital=settings.INITIAL_CAPITAL,
+        initial_capital=initial_capital,
         journal=journal,
         portfolio_risk=portfolio_risk,
         trade_manager=trade_manager,
